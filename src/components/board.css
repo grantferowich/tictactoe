@@ -16,6 +16,11 @@ table, th, td {
     border: 1px solid black;
     padding: 10px;
     width: 25px;
-    margin: 50px;
+    margin: 30px;
   }
-  
+
+  h3 {
+    font-family: Calibri, sans-serif;
+    font-size: 24px;
+    text-align: center;
+  }

@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import './board.css'
 export default class board extends Component {
     
-   
-    
     state = {
         storage: [[' ', ' ', ' '],
         [' ', ' ', ' '],
@@ -12,7 +10,24 @@ export default class board extends Component {
         numberOfRounds: 9
     }
     
-    // check some stuff
+    // new
+    switchPlayer(){
+        if (this.state.currentPlayer === 'X'){
+            this.setState(prevState => {
+                let currentPlayerCopy = [...prevState.currentPlayer];
+                currentPlayerCopy = 'O'
+                return {currentPlayer: currentPlayerCopy}
+            })
+        } else {
+            this.setState(prevState => {
+                let currentPlayerCopy = [prevState.currentPlayer]
+                currentPlayerCopy = 'X'
+                return {currentPlayer: currentPlayerCopy}
+            })
+        }
+    }
+
+    // check some data stuff
     canPlacePiece(row, col){
         if (isNaN(row) || isNaN(col) || row > 2 || row < 0
             || col > 2 || col < 0
@@ -23,7 +38,7 @@ export default class board extends Component {
         return true;
     }
     
-    // do some stuff with the data
+    // do some stuff with data
     placePiece(row, col, player){
             this.setState( prevState =>{
                 const storageCopy = [...prevState.storage];
@@ -33,7 +48,7 @@ export default class board extends Component {
             )       
     }
     
-    // check some stuff
+    // check some data stuff, main method
     checkWinCondition(player){
         if (this.checkColumns(player) || this.checkDiagonals(player) || this.checkRows(player)){
             return true
@@ -41,9 +56,9 @@ export default class board extends Component {
         return false
     }
         
-    // check some stuff
+    // check some data stuff, helper method
     checkRows(player){
-        for (let row = 0; row < this.storage.length; row++){
+        for (let row = 0; row < this.state.storage.length; row++){
             if (this.state.storage[row][0] === player && this.state.storage[row][1] === player && this.state.storage[row][2] === player){
                 return true
             }
@@ -51,7 +66,7 @@ export default class board extends Component {
         return false;
     }
         
-    // check some stuff
+    // check some stuff, helper method
     checkColumns(player){
            for (let col = 0; col < this.storage[0].length; col++){
                 if (this.state.storage[0][col] === player && this.state.storage[1][col] === player && this.state.storage[2][col] === player){
@@ -61,7 +76,7 @@ export default class board extends Component {
            return false;
     }
     
-    // check some stuff
+    // check some stuff, helper method
     checkDiagonals(player){
             // top left to bottom right
             if (this.state.storage[0][0] === player && this.state.storage[1][1] === player && this.state.storage[2][2] === player){
@@ -73,7 +88,9 @@ export default class board extends Component {
             }
             return false;
     }
-    Ô
+    
+
+    
 
   render() {
     return (
@@ -97,6 +114,7 @@ export default class board extends Component {
             </tr>
             </tbody>
         </table>
+        <h3>It is currently {this.state.currentPlayer}'s turn.</h3>
       </div>
     )
   }
