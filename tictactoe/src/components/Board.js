@@ -8,7 +8,7 @@ export default class board extends Component {
         storage: [[' ', ' ', ' '],
         [' ', ' ', ' '],
         [' ', ' ', ' ']],
-        state2: null
+        state2: ''
     }
     
     // check some stuff
