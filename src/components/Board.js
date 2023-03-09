@@ -7,7 +7,9 @@ export default class board extends Component {
     state = {
         storage: [[' ', ' ', ' '],
         [' ', ' ', ' '],
-        [' ', ' ', ' ']]
+        [' ', ' ', ' ']],
+        currentPlayer: 'X',
+        numberOfRounds: 9
     }
     
     // check some stuff
