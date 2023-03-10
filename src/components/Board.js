@@ -3,9 +3,9 @@ import './board.css'
 export default class board extends Component {
     
     state = {
-        storage: [[' ', ' ', ' '],
-        [' ', ' ', ' '],
-        [' ', ' ', ' ']],
+        storage: [['', '', ''],
+        ['', '', ''],
+        ['', '', '']],
         currentPlayer: 'X',
         numberOfRounds: 9,
         xHasWon: false,
@@ -13,9 +13,8 @@ export default class board extends Component {
         resultInTie: false
     }
     
-    // new
+    // do some stuff with app state
     switchPlayer(){
-        // console.log('/// debug switchPlayer() firing...')
         if (this.state.currentPlayer === 'X'){
             this.setState(prevState => {
                 let currentPlayerCopy = [...prevState.currentPlayer];
@@ -24,7 +23,7 @@ export default class board extends Component {
             })
         } else {
             this.setState(prevState => {
-                let currentPlayerCopy = [prevState.currentPlayer]
+                let currentPlayerCopy = [...prevState.currentPlayer]
                 currentPlayerCopy = 'X'
                 return {currentPlayer: currentPlayerCopy}
             })
@@ -44,21 +43,16 @@ export default class board extends Component {
     
     // do some stuff with data
     placePiece(row, col, player){
-            this.setState( prevState =>{
-                const storageCopy = [...prevState.storage];
-                storageCopy[row][col] = player
-                return {storage: storageCopy}
-            }
-            )     
-           
+            this.setState((state) => {
+                let storage = [...state.storage]
+                storage[row][col] = player;
+                return {storage}
+            }, () => {console.log('Updated storage:', this.state.storage)})        
     }
-    
 
-        
+
     // check some data stuff, helper method
     checkRows(player){
-        // console.log('/// debug checkRows')
-        console.log('//// debug player', player)
         for (let row = 0; row < this.state.storage.length; row++){
             if (this.state.storage[row][0] === player && this.state.storage[row][1] === player && this.state.storage[row][2] === player){
                 return true
@@ -69,8 +63,6 @@ export default class board extends Component {
         
     // check some stuff, helper method
     checkColumns(player){
-        // console.log('/// debug checkCols')
-        console.log('//// debug player', player)
            for (let col = 0; col < this.state.storage[0].length; col++){
                 if (this.state.storage[0][col] === player && this.state.storage[1][col] === player && this.state.storage[2][col] === player){
                     return true
@@ -81,39 +73,38 @@ export default class board extends Component {
     
     // check some stuff, helper method
     checkDiagonals(player){
-            console.log('/// debug checkDiags')
-            console.log('//// debug player', player)
-            console.log('/// debug storage', this.state.storage)
-            console.log('/// wtf', this.state.storage[0][0])
-            console.log('/// debug this.state.storage[0][0]', this.state.storage[0][0])
-            console.log('/// debug this.state.storage[1][1]', this.state.storage[1][1])
-            console.log('/// debug this.state.storage[2][2]', this.state.storage[2][2])
             // top left to bottom right
-            console.log(this.state.storage)
             if (this.state.storage[0][0] === player && this.state.storage[1][1] === player && this.state.storage[2][2] === player){
-                console.log('something funny')
                 return true;
             }
             // bottom left to top right
             if (this.state.storage[0][2] === player && this.state.storage[1][1] === player && this.state.storage[2][0] === player){
-                console.log('something funny')
                 return true;
             }
             return false;
     }
 
-    // check some data stuff, main method
-    checkWinCondition(player){
-        // console.log('/// debug checkWinCond')
-        if (this.checkColumns(player) || this.checkDiagonals(player) || this.checkRows(player)){
-                return true
+
+
+    componentDidUpdate = (prevState) => {
+        console.log('this.state.storage', this.state.storage)
+        console.log(prevState)
+        if (prevState.storage !== this.state.storage){
+            const checkWinCondition = (state, player) => {
+                // console.log('/// debug the state (again)',this.state.storage[0])
+                // console.log('/// debug the storage', this.state.storage[0][0] === '')
+                if (this.checkColumns(player) || this.checkDiagonals(player) || this.checkRows(player)){
+                    console.log('something wierd')
+                    return true
+                }
+                return false
+            };
+            this.checkWinCondition = checkWinCondition
         }
-        return false
+        return this.checkWinCondition(this.state, this.state.currentPlayer)
     }
 
-    // think can get away with conditional rendering for declaring winner
-    // declareWinner(player){   
-    // }
+
 
     decrementRounds(){
         this.setState( prevState =>{
@@ -126,18 +117,21 @@ export default class board extends Component {
     
     handleClick(row, col){
         console.log('handleClick firing...')
-        console.log('/// debug this.currentPlayer', this.state.currentPlayer)
         if (this.canPlacePiece(row, col)){
             this.placePiece(row, col, this.state.currentPlayer)
-            console.log('/// debug storage after place piece', Array.isArray(this.state.storage))
-            let checkForWinnerTOF = this.checkWinCondition(this.state.currentPlayer)
-            console.log('/// debug checkForWinnerTOF', checkForWinnerTOF)
-            // declare winner, if any
-            if (checkForWinnerTOF && this.state.currentPlayer === 'X'){
+            // give some time for state to update
+            console.log('/// debug the state', this.state)
+            //
+         
+            let checkForWinnerToF = this.componentDidUpdate();
+
+            console.log('checkForWinnerToF:', checkForWinnerToF)
+
+            if (checkForWinnerToF && this.state.currentPlayer === 'X'){
                 this.setState({xHasWon: true})
                 // this.declareWinner(this.state.currentPlayer)
             }
-            if (checkForWinnerTOF && this.state.currentPlayer === 'O'){
+            if (checkForWinnerToF && this.state.currentPlayer === 'O'){
                 this.setState({oHasWon: true})
                 // this.declareWinner(this.state.currentPlayer)
             }
@@ -146,7 +140,7 @@ export default class board extends Component {
             this.decrementRounds()
 
             // declare tie, if exists
-            if (!checkForWinnerTOF && this.state.numberOfRounds === 0){
+            if (this.state.numberOfRounds === 0){
                 this.setState({resultInTie: true})
             }
             this.switchPlayer()
