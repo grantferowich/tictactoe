@@ -15,13 +15,7 @@ export default function Board() {
 
 
     const switchPlayer = (currentPlayer) => {
-        if (currentPlayer === 'X'){
-            // console.log('current player === X', currentPlayer === 'X')
-            setCurrentPlayer('O')
-        } else {
-            setCurrentPlayer('X')
-        }
-        // setCurrentPlayer(currentPlayer => currentPlayer === 'X' ? 'O' : 'X');
+        setCurrentPlayer(currentPlayer => currentPlayer === 'X' ? 'O' : 'X');
     }
 
     // check some data stuff
