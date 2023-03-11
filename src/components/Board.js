@@ -13,12 +13,12 @@ export default function Board() {
     // let [resultInTie, setResultInTie] = useState(false)
 
 
-
+    // update the state 
     const switchPlayer = (currentPlayer) => {
         setCurrentPlayer(currentPlayer => currentPlayer === 'X' ? 'O' : 'X');
     }
 
-    // check some data stuff
+    // read the state
     const canPlacePiece = (row, col) =>{
         if (isNaN(row) || isNaN(col) || row > 2 || row < 0
             || col > 2 || col < 0
@@ -29,7 +29,7 @@ export default function Board() {
         return true;
     }
     
-    // do some stuff with data
+    // update the state
     const placePiece = (row, col, player, storage) => {
         setStorage(prevState => {
             let newState = [...prevState]
@@ -38,7 +38,7 @@ export default function Board() {
         })
     }
 
-    // check some data stuff, helper method
+    // read the state, helper method
     const checkRows = (player) => {
         for (let row = 0; row < storage.length; row++){
             if (storage[row][0] === player && storage[row][1] === player && storage[row][2] === player){
@@ -48,7 +48,7 @@ export default function Board() {
         return false;
     }
         
-    // check some stuff, helper method
+    // read the state, helper method
     const checkColumns = (player) => {
            for (let col = 0; col < storage[0].length; col++){
                 if (storage[0][col] === player && storage[1][col] === player && storage[2][col] === player){
@@ -58,7 +58,7 @@ export default function Board() {
         return false;
     }
     
-    // check some stuff, helper method
+    // read the state, helper method
     const checkDiagonals = (player) => {
             // top left to bottom right
             if (storage[0][0] === player && storage[1][1] === player && storage[2][2] === player){
@@ -71,6 +71,7 @@ export default function Board() {
             return false;
     }
 
+    // read the state
     const checkWinCondition = (player) => {
         if (checkColumns(player) || checkDiagonals(player) || checkRows(player)){
             console.log('something wierd')
@@ -79,6 +80,7 @@ export default function Board() {
         return false
     };
 
+    // update the state
     const decrementRounds = () => {
         setNumberOfRounds(numberOfRounds--)
     }
