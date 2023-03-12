@@ -96,7 +96,8 @@ export default function Board() {
 
     const displayWinStatus = () => {
         let winResult = checkWinCondition()
-        if (numberOfRounds === 0 && !winResult){
+        console.log(numberOfRounds)
+        if (numberOfRounds === 1 && !winResult){
             setResultInTie(true)
         }
         if (winResult && currentPlayer === 'X'){
@@ -110,10 +111,9 @@ export default function Board() {
 
     async function handleClick(row, col){
             if (canPlacePiece(row, col)){
-                let result = await placePiece(row, col)
-                console.log('result', result)
+                await placePiece(row, col)
                 /// let's apply single responsibility
-                decrementRounds()
+                await decrementRounds()
                 displayWinStatus()
             } 
 
