@@ -7,7 +7,7 @@ export default function Board() {
     ['', '', ''],
     ['', '', '']] );
     let [currentPlayer, setCurrentPlayer] = useState('X')
-    let [numberOfRounds, setNumberOfRounds] = useState(9)
+    let [numberOfRounds, setNumberOfRounds] = useState(8)
     const [xHasWon, setXHasWon] = useState(false)
     const [oHasWon, setOHasWon] = useState(false)
     let [resultInTie, setResultInTie] = useState(false)
@@ -28,10 +28,10 @@ export default function Board() {
     }
     
     // update the state
-    const placePiece = (row, col, player, storage) => {
+    const placePiece = (row, col) => {
         setStorage(prevState => {
             let newState = [...prevState]
-            newState[row][col] = player;
+            newState[row][col] = currentPlayer;
             return newState
         })
     }
@@ -90,7 +90,11 @@ export default function Board() {
 
     // update the state
     const decrementRounds = () => {
-        setNumberOfRounds(numberOfRounds--)
+        setNumberOfRounds(prevState => {
+            let newState = prevState
+            newState--
+            return newState
+        })
     }
     
 
@@ -101,6 +105,11 @@ export default function Board() {
                 let winResult = checkWinCondition(currentPlayer)
                 
                 decrementRounds()
+                console.log('rounds', numberOfRounds)
+                console.log(!winResult)
+                if (numberOfRounds === 0 && !winResult){
+                    setResultInTie(true)
+                }
 
                 if (winResult && currentPlayer === 'X'){
                     setXHasWon(true)
