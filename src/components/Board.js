@@ -7,7 +7,7 @@ export default function Board() {
     ['', '', ''],
     ['', '', '']] );
     let [currentPlayer, setCurrentPlayer] = useState('X')
-    let [numberOfRounds, setNumberOfRounds] = useState(8)
+    let [numberOfRounds, setNumberOfRounds] = useState(9)
     const [xHasWon, setXHasWon] = useState(false)
     const [oHasWon, setOHasWon] = useState(false)
     let [resultInTie, setResultInTie] = useState(false)
@@ -34,6 +34,7 @@ export default function Board() {
             newState[row][col] = currentPlayer;
             return newState
         })
+        return true;
     }
 
     // read the state, helper method
@@ -75,7 +76,6 @@ export default function Board() {
 
     // read the state
     const checkWinCondition = () => {
-    
         if (checkColumns() || checkDiagonals() || checkRows()){
             if (currentPlayer === 'X'){
                 setXHasWon(true)
@@ -85,43 +85,36 @@ export default function Board() {
             }
             return true
         }
+        switchPlayer()
         return false
     };
 
     // update the state
     const decrementRounds = () => {
-        setNumberOfRounds(prevState => {
-            let newState = prevState
-            newState--
-            return newState
-        })
+        setNumberOfRounds(prevState => prevState - 1)
+    }
+
+    const displayWinStatus = () => {
+        let winResult = checkWinCondition()
+        if (numberOfRounds === 0 && !winResult){
+            setResultInTie(true)
+        }
+        if (winResult && currentPlayer === 'X'){
+            setXHasWon(true)
+        }
+        if (winResult && currentPlayer === 'O'){
+            setOHasWon(true)
+        }
     }
     
 
-    function handleClick(row, col){
+    async function handleClick(row, col){
             if (canPlacePiece(row, col)){
-                
-                placePiece(row, col, currentPlayer)
-                let winResult = checkWinCondition(currentPlayer)
-                
+                let result = await placePiece(row, col)
+                console.log('result', result)
+                /// let's apply single responsibility
                 decrementRounds()
-                console.log('rounds', numberOfRounds)
-                console.log(!winResult)
-                if (numberOfRounds === 0 && !winResult){
-                    setResultInTie(true)
-                }
-
-                if (winResult && currentPlayer === 'X'){
-                    setXHasWon(true)
-                }
-                if (winResult && currentPlayer === 'O'){
-                    setOHasWon(true)
-                }
-
-                // check win condition 
-                // decrement rounds
-                // 
-                switchPlayer()
+                displayWinStatus()
             } 
 
     }
