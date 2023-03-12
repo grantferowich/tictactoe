@@ -9,7 +9,7 @@ The deployed version of the application is available here: https://tic-tac-toe-f
 The system was designed according to functional requirements. 
 
 ## Live app preview
-![alt text](stufftextblah)
+![alt text](https://github.com/grantferowich/tictactoe/blob/main/public/Screen%20Shot%202023-03-12%20at%201.46.23%20PM.png)
 
 # Functional requirements
 
