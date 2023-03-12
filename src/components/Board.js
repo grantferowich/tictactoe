@@ -12,6 +12,15 @@ export default function Board() {
     // const [oHasWon, setOHasWon] = useState(false)
     // let [resultInTie, setResultInTie] = useState(false)
 
+    useEffect(() => {
+        console.log('Current player:', currentPlayer);
+      }, [currentPlayer]);
+
+
+    useEffect(() => {
+        console.log('Current storage:', storage);
+      }, [storage]);
+
 
     // update the state 
     const switchPlayer = (currentPlayer) => {
@@ -85,14 +94,6 @@ export default function Board() {
         setNumberOfRounds(numberOfRounds--)
     }
     
-    useEffect(() => {
-        console.log('Current player:', currentPlayer);
-      }, [currentPlayer]);
-
-
-    useEffect(() => {
-        console.log('Current storage:', storage);
-      }, [storage]);
 
     const handleClick = (row, col) => {
             console.log('click')
@@ -100,6 +101,9 @@ export default function Board() {
             console.log('col', col)
             if (canPlacePiece(row, col)){
                 placePiece(row, col, currentPlayer)
+                // check win condition 
+                // decrement rounds
+                // 
                 switchPlayer(currentPlayer)
             } 
     }
