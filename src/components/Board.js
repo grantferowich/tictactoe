@@ -8,22 +8,11 @@ export default function Board() {
     ['', '', '']] );
     let [currentPlayer, setCurrentPlayer] = useState('X')
     let [numberOfRounds, setNumberOfRounds] = useState(9)
-    // const [xHasWon, setXHasWon] = useState(false)
-    // const [oHasWon, setOHasWon] = useState(false)
-    // let [resultInTie, setResultInTie] = useState(false)
+    const [xHasWon, setXHasWon] = useState(false)
+    const [oHasWon, setOHasWon] = useState(false)
+    let [resultInTie, setResultInTie] = useState(false)
 
-    useEffect(() => {
-        console.log('Current player:', currentPlayer);
-      }, [currentPlayer]);
-
-
-    useEffect(() => {
-        console.log('Current storage:', storage);
-      }, [storage]);
-
-
-    // update the state 
-    const switchPlayer = (currentPlayer) => {
+    const switchPlayer = () => {
         setCurrentPlayer(currentPlayer => currentPlayer === 'X' ? 'O' : 'X');
     }
 
@@ -48,9 +37,9 @@ export default function Board() {
     }
 
     // read the state, helper method
-    const checkRows = (player) => {
+    const checkRows = () => {
         for (let row = 0; row < storage.length; row++){
-            if (storage[row][0] === player && storage[row][1] === player && storage[row][2] === player){
+            if (storage[row][0] === currentPlayer && storage[row][1] === currentPlayer && storage[row][2] === currentPlayer){
                 return true
             }
         }
@@ -58,9 +47,9 @@ export default function Board() {
     }
         
     // read the state, helper method
-    const checkColumns = (player) => {
+    const checkColumns = () => {
            for (let col = 0; col < storage[0].length; col++){
-                if (storage[0][col] === player && storage[1][col] === player && storage[2][col] === player){
+                if (storage[0][col] === currentPlayer && storage[1][col] === currentPlayer && storage[2][col] === currentPlayer){
                     return true
                 }
            }
@@ -68,22 +57,32 @@ export default function Board() {
     }
     
     // read the state, helper method
-    const checkDiagonals = (player) => {
+    const checkDiagonals = () => {
+            
             // top left to bottom right
-            if (storage[0][0] === player && storage[1][1] === player && storage[2][2] === player){
+            if ((storage[0][0] === currentPlayer) && (storage[1][1] === currentPlayer) && (storage[2][2] === currentPlayer)){
+                console.log('something fishy')
                 return true;
             }
+
             // bottom left to top right
-            if (storage[0][2] === player && storage[1][1] === player && storage[2][0] === player){
+            if (storage[0][2] === currentPlayer && storage[1][1] === currentPlayer && storage[2][0] === currentPlayer){
+
                 return true;
             }
             return false;
     }
 
     // read the state
-    const checkWinCondition = (player) => {
-        if (checkColumns(player) || checkDiagonals(player) || checkRows(player)){
-            console.log('something wierd')
+    const checkWinCondition = () => {
+    
+        if (checkColumns() || checkDiagonals() || checkRows()){
+            if (currentPlayer === 'X'){
+                setXHasWon(true)
+            }
+            if (currentPlayer === 'O'){
+                setOHasWon(true)
+            }
             return true
         }
         return false
@@ -95,24 +94,34 @@ export default function Board() {
     }
     
 
-    const handleClick = (row, col) => {
-            console.log('click')
-            console.log('row', row)
-            console.log('col', col)
+    function handleClick(row, col){
             if (canPlacePiece(row, col)){
+                
                 placePiece(row, col, currentPlayer)
+                let winResult = checkWinCondition(currentPlayer)
+                
+                decrementRounds()
+
+                if (winResult && currentPlayer === 'X'){
+                    setXHasWon(true)
+                }
+                if (winResult && currentPlayer === 'O'){
+                    setOHasWon(true)
+                }
+
                 // check win condition 
                 // decrement rounds
                 // 
-                switchPlayer(currentPlayer)
+                switchPlayer()
             } 
+
     }
 
   return (
     <div>
-        {/* {xHasWon && <div>X has won!</div>}
-        {oHasWon && <div>O has won!</div>} */}
-        {/* {resultInTie && <div>Cat's game!</div>} */}
+        {xHasWon && <div>X has won!</div>}
+        {oHasWon && <div>O has won!</div>}
+        {resultInTie && <div>Cat's game!</div>}
         <table>
             <tbody>
             <tr>
