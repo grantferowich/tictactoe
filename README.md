@@ -20,18 +20,18 @@ The system was designed according to functional requirements.
 
 
 ## Event Flow
-When a user clicks on a spot on the tic tac toe table
-    -> check if the table state can change
-        -if yes, then change. (a user should be able to place a move by clicking on a square)(#1)
-        -if no, do nothing.
-    -> check if the game has a winner  
-        -if yes, declare winner (a user should be able to see when a user has won)(#4)
-        -if no, do nothing.
-    -> decrement number of rounds (do stuff with state data)
-    -> check if there is a tie
-        -if yes, declare cat's game (a user should be able to see when the game ends in a tie)(#5)
-        -if no, do nothing.
-    -> switch the user (#2)
-    -> Display whose turn it is.(A user should be able to see whose turn it is)(#3)
+- When a user clicks on a spot on the tic tac toe table:
+        - Check if the table state can change.
+        - If yes, then change. (a user should be able to place a move by clicking on a square)(#1)
+        - If no, do nothing.
+    - Check if the game has a winner  
+        - If yes, declare winner (a user should be able to see when a user has won)(#4)
+        - If no, do nothing.
+    - Decrement number of rounds (do stuff with state data).
+    - Check if there is a tie
+        - if yes, declare cat's game (a user should be able to see when the game ends in a tie)(#5).
+        - if no, do nothing.
+    - Switch the user (#2).
+    - Display whose turn it is.(A user should be able to see whose turn it is)(#3)
 
 
