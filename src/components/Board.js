@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import './board.css'
-import { useState } from 'react';
 
 export default function Board() {
     let [storage, setStorage] = useState([['', '', ''],
@@ -116,7 +115,6 @@ export default function Board() {
                 await decrementRounds()
                 displayWinStatus()
             } 
-
     }
 
   return (
