@@ -1,4 +1,4 @@
-## Tic Tac Toe
+# Tic Tac Toe
 
 Tic Tac Toe is a classic game. Line up three X's or three O's in a row and you win. 
 
@@ -8,18 +8,18 @@ The deployed version of the application is available here: https://tic-tac-toe-f
 
 The system was designed according to functional requirements. 
 
-## Functional requirements
+# Functional requirements
 
-# state changes
+## state changes
 1. A user should be able to place a move by clicking on a square.
 2. A user should be able to switch with the other user.
-# view changes
+## view changes
 3. A user should be able to see whose turn it is. 
 4. A user should be able to see when a user has won.
 5. A user should be able to see when the game ends in a tie.
 
 
-# Event Flow
+## Event Flow
 When a user clicks on a spot on the tic tac toe table
     -> check if the table state can change
         -if yes, then change. (a user should be able to place a move by clicking on a square)(#1)
