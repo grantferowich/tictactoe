@@ -21,7 +21,7 @@ The system was designed according to functional requirements.
 
 ## Event Flow
 - When a user clicks on a spot on the tic tac toe table:
-        - Check if the table state can change.
+    - Check if the table state can change.
         - If yes, then change. (a user should be able to place a move by clicking on a square)(#1)
         - If no, do nothing.
     - Check if the game has a winner  
