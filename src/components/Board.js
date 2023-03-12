@@ -10,6 +10,7 @@ export default function Board() {
     const [xHasWon, setXHasWon] = useState(false)
     const [oHasWon, setOHasWon] = useState(false)
     let [resultInTie, setResultInTie] = useState(false)
+    let [finishedState, setFinishedState] = useState(false)
 
     const switchPlayer = () => {
         setCurrentPlayer(currentPlayer => currentPlayer === 'X' ? 'O' : 'X');
@@ -58,16 +59,12 @@ export default function Board() {
     
     // read the state, helper method
     const checkDiagonals = () => {
-            
             // top left to bottom right
             if ((storage[0][0] === currentPlayer) && (storage[1][1] === currentPlayer) && (storage[2][2] === currentPlayer)){
-                console.log('something fishy')
                 return true;
             }
-
             // bottom left to top right
             if (storage[0][2] === currentPlayer && storage[1][1] === currentPlayer && storage[2][0] === currentPlayer){
-
                 return true;
             }
             return false;
@@ -95,18 +92,19 @@ export default function Board() {
 
     const displayWinStatus = () => {
         let winResult = checkWinCondition()
-        console.log(numberOfRounds)
         if (numberOfRounds === 1 && !winResult){
             setResultInTie(true)
+            setFinishedState(true)
         }
         if (winResult && currentPlayer === 'X'){
             setXHasWon(true)
+            setFinishedState(true)
         }
         if (winResult && currentPlayer === 'O'){
             setOHasWon(true)
+            setFinishedState(true)
         }
     }
-    
 
     async function handleClick(row, col){
             if (canPlacePiece(row, col)){
@@ -117,11 +115,23 @@ export default function Board() {
             } 
     }
 
+    async function clearState(){
+        await setStorage([['', '', ''],
+        ['', '', ''],
+        ['', '', '']])
+        await setNumberOfRounds(9)
+        await setCurrentPlayer('X')
+        await setXHasWon(false)
+        await setOHasWon(false)
+        await setResultInTie(false)
+        setFinishedState(false)
+    }
+
   return (
     <div>
-        {xHasWon && <div>X has won!</div>}
-        {oHasWon && <div>O has won!</div>}
-        {resultInTie && <div>Cat's game!</div>}
+        {xHasWon && finishedState && <div><h3>X has won!</h3><button onClick={clearState}>Play again</button></div>}
+        {oHasWon && finishedState && <div><h3>O has won!</h3><button onClick={clearState}>Play again</button></div>}
+        {resultInTie && finishedState && <div><h3>Cat's game!</h3><button onClick={clearState}>Play again</button></div>}
         <table>
             <tbody>
             <tr>
@@ -141,7 +151,7 @@ export default function Board() {
             </tr>
             </tbody>
         </table>
-        <h3>It is currently {currentPlayer}'s turn.</h3>
+        {!xHasWon && !oHasWon && !resultInTie && <h3>It is currently {currentPlayer}'s turn.</h3>}
     </div>
   )
 }
