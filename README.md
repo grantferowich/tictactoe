@@ -10,10 +10,10 @@ The system was designed according to functional requirements.
 
 # Functional requirements
 
-## state changes
+## State changes
 1. A user should be able to place a move by clicking on a square.
 2. A user should be able to switch with the other user.
-## view changes
+## View changes
 3. A user should be able to see whose turn it is. 
 4. A user should be able to see when a user has won.
 5. A user should be able to see when the game ends in a tie.
